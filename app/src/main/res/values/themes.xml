@@ -1,0 +1,18 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.ECommerceSuperCart" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+
+
+
+    <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    </style>
+
+    <style name="Theme.ECommerceSuperCart" parent="Base.Theme.ECommerceSuperCart" />
+ <style name="Theme.AppCompat.Starting" parent="Theme.SplashScreen">
+     <item name="windowSplashScreenBackground">@color/bg_splash_screen</item>
+     <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_foreground</item>
+     <item name="postSplashScreenTheme">@style/Theme.ECommerceSuperCart</item>
+ </style>
+  
+</resources>
