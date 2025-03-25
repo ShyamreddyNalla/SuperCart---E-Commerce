@@ -53,11 +53,9 @@ class SubcategoryProductsFragment : Fragment() {
                 Toast.makeText(requireContext(), "No products found", Toast.LENGTH_SHORT).show()
             }
         }
-
         productViewModel.errorLiveData.observe(viewLifecycleOwner) { errorMessage ->
             Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
         }
-
         productViewModel.getProducts(subcategoryId)
     }
 }
