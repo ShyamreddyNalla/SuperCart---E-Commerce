@@ -1,11 +1,11 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.ECommerceSuperCart" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+<item name="android:statusBarColor">#2196F3</item>
+<item name="android:navigationBarColor">#03A9F4</item>
 
 
-
-    <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+         <item name="colorPrimary">#73A7D1</item>
     </style>
 
     <style name="Theme.ECommerceSuperCart" parent="Base.Theme.ECommerceSuperCart" />

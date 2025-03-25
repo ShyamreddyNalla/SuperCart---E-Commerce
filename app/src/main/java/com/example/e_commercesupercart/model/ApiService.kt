@@ -28,5 +28,7 @@ interface ApiService {
 
     @GET("SubCategory/products/{sub_category_id}")
     suspend fun getProductsBySubcategory(@Path("sub_category_id") subCategoryId: String):Response<ProductResponse>
+    @GET("Product/search")
+    suspend fun searchProducts(@Query("query") query: String):Response<ProductResponse>
 
    }

@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.e_commercesupercart.R
 import com.example.e_commercesupercart.databinding.FragmentLoginBinding
 import com.example.e_commercesupercart.viewmodel.LoginViewModel
-import com.example.e_commercesupercart.viewmodel.LoginViewModelFactory
+import com.example.e_commercesupercart.viewmodel.factories.LoginViewModelFactory
 import com.example.e_commercesupercart.model.repository.LoginRepository
 
 class LoginFragment : Fragment() {

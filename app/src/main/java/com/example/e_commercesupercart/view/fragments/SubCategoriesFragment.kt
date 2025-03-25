@@ -14,7 +14,7 @@ import com.example.e_commercesupercart.model.repository.SubCategoryRepository
 import com.example.e_commercesupercart.model.subcategories.Subcategory
 import com.example.e_commercesupercart.view.adaptors.SubcategoryPagerAdapter
 import com.example.e_commercesupercart.viewmodel.SubCategoryViewModel
-import com.example.e_commercesupercart.viewmodel.SubCategoryViewModelFactory
+import com.example.e_commercesupercart.viewmodel.factories.SubCategoryViewModelFactory
 import com.google.android.material.tabs.TabLayoutMediator
 
 class SubcategoriesFragment : Fragment() {

@@ -7,5 +7,6 @@ data class RegisterResponse(
     val status: Int,
 
     @SerializedName("message")
-    val message: String
+    val message: String,
+    val user: User
 )

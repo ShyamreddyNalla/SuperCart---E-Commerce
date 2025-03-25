@@ -1,6 +1,8 @@
 package com.example.e_commercesupercart.view.fragments
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +15,7 @@ import com.example.e_commercesupercart.model.ApiClient
 import com.example.e_commercesupercart.model.ApiService
 import com.example.e_commercesupercart.model.repository.RegisterRepository
 import com.example.e_commercesupercart.viewmodel.RegisterViewModel
-import com.example.e_commercesupercart.viewmodel.RegisterViewModelFactory
+import com.example.e_commercesupercart.viewmodel.factories.RegisterViewModelFactory
 
 class RegisterFragment : Fragment() {
     private lateinit var binding: FragmentRegisterBinding
@@ -26,11 +28,11 @@ class RegisterFragment : Fragment() {
         binding = FragmentRegisterBinding.inflate(inflater, container, false)
 
         val registerRepository = RegisterRepository(ApiClient.retrofit.create(ApiService::class.java))
-        registerViewModel = ViewModelProvider(this, RegisterViewModelFactory(registerRepository)).get(RegisterViewModel::class.java)
+        registerViewModel = ViewModelProvider(this, RegisterViewModelFactory(registerRepository))[RegisterViewModel::class.java]
 
         registerViewModel.registerResponse.observe(viewLifecycleOwner) { response ->
             response?.let {
-                if (it.status == 0) {
+                if (it.status == 0 ){
                     Toast.makeText(requireContext(), "Registration Successful", Toast.LENGTH_SHORT).show()
                     navigateToLogin()
                 } else {
@@ -99,5 +101,19 @@ class RegisterFragment : Fragment() {
             .replace(R.id.fragment_container, LoginFragment())
             .addToBackStack("register")
             .commit()
+    }
+    private fun saveUserDetails(fullName: String,mobileNo: String,emailId: String){
+        val sharedPreferences = requireContext().getSharedPreferences("UserDetails", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString("UserName", fullName)
+        editor.putString("UserEmail", emailId)
+        editor.putString("UserPhone", mobileNo)
+        val isSaved = editor.commit()
+        if(isSaved){
+            Log.d("SaveUserDetails", "Saved $fullName,$emailId, $mobileNo")
+        }else{
+            Log.d("SaveUserDetails", "Failed to save user details")
+        }
+     editor.apply()
     }
 }
