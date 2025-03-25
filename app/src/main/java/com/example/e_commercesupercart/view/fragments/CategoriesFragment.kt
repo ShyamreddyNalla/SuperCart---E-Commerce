@@ -44,6 +44,7 @@ class CategoriesFragment : Fragment() {
         categoryViewModel.categoriesLiveData.observe(viewLifecycleOwner) { categories ->
             if (categories.isNotEmpty()) {
                 binding.recyclerViewCategories.adapter = CategoryAdapter(categories) { categoryId ->
+                    // Navigate to SubcategoriesFragment
                     navigateToSubcategoriesFragment(categoryId)
                 }
             } else {
