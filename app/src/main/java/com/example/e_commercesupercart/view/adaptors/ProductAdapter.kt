@@ -7,11 +7,13 @@ import com.bumptech.glide.Glide
 import com.example.e_commercesupercart.databinding.ProductItemBinding
 import com.example.e_commercesupercart.model.subcategories.Product
 
-class ProductAdapter(private var products: List<Product>) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
+class ProductAdapter(private var products: List<Product>,
+                     private val onProductClick:(String) -> Unit)
+    : RecyclerView.Adapter<ProductViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
         val binding = ProductItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ProductViewHolder(binding)
+        return ProductViewHolder(binding, onProductClick)
     }
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
@@ -23,20 +25,5 @@ class ProductAdapter(private var products: List<Product>) : RecyclerView.Adapter
     fun updateProducts(newProducts: List<Product>) {
         products = newProducts
         notifyDataSetChanged()
-    }
-
-    class ProductViewHolder(private val binding: ProductItemBinding) : RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(product: Product) {
-            binding.productName.text = product.productName
-            binding.productPrice.text = "$${product.price}"
-            binding.productDescription.text = product.description
-            Glide.with(binding.imageProduct.context)
-                .load("https://apolisrises.co.in/myshop/images/${product.productImageUrl}")
-                .into(binding.imageProduct)
-
-            val rating = product.averageRating.toFloatOrNull()?: 0f
-            binding.ratingBar.rating = rating
-        }
     }
 }

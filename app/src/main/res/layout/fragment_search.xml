@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="8dp"
+    android:id="@+id/fragment_container_search"
     tools:context=".view.fragments.SearchFragment">
+
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/searchView"
@@ -21,4 +23,4 @@
      android:visibility="gone"
      android:id="@+id/recyclerViewSearchResults"/>
 
-</LinearLayout>
+</FrameLayout>

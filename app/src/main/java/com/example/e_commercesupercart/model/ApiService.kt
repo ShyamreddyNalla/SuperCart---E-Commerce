@@ -1,6 +1,7 @@
 package com.example.e_commercesupercart.model
 
 
+import com.example.e_commercesupercart.model.product_details.ProductDetailsResponse
 import com.example.e_commercesupercart.model.subcategories.ProductResponse
 import com.example.e_commercesupercart.model.subcategories.SubCategoryResponse
 import retrofit2.Response
@@ -30,5 +31,9 @@ interface ApiService {
     suspend fun getProductsBySubcategory(@Path("sub_category_id") subCategoryId: String):Response<ProductResponse>
     @GET("Product/search")
     suspend fun searchProducts(@Query("query") query: String):Response<ProductResponse>
+
+    @GET("Product/details/{product_id}")
+    suspend fun getProductDetails(@Path("product_id") productId: String): Response<ProductDetailsResponse>
+
 
    }

@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.e_commercesupercart.R
 import com.example.e_commercesupercart.databinding.FragmentSubcategoryProductsBinding
 import com.example.e_commercesupercart.model.ApiClient
 import com.example.e_commercesupercart.model.ApiService
@@ -31,7 +32,9 @@ class SubcategoryProductsFragment : Fragment() {
         binding = FragmentSubcategoryProductsBinding.inflate(inflater, container, false)
 
         subcategoryId = arguments?.getString("subcategoryId") ?: ""
-        productAdapter = ProductAdapter(listOf())
+        productAdapter = ProductAdapter(listOf()){ productId ->
+            openProductDetails(productId)
+        }
         binding.recyclerViewProducts.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerViewProducts.adapter = productAdapter
 
@@ -59,5 +62,16 @@ class SubcategoryProductsFragment : Fragment() {
         }
 
         productViewModel.getProducts(subcategoryId)
+    }
+    private fun openProductDetails(productId: String) {
+        val fragment = ProductDetailsFragment().apply {
+            arguments = Bundle().apply {
+                putString("product_id", productId)
+            }
+        }
+           requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 }

@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.e_commercesupercart.R
 import com.example.e_commercesupercart.databinding.FragmentSearchBinding
 import com.example.e_commercesupercart.model.ApiClient
 import com.example.e_commercesupercart.model.ApiService
@@ -44,11 +45,25 @@ class SearchFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        productAdapter = ProductAdapter(emptyList())
+        productAdapter = ProductAdapter(emptyList()){ productId ->
+            openProductDetails(productId)
+        }
         binding.recyclerViewSearchResults.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = productAdapter
         }
+    }
+
+    private fun openProductDetails(productId: String) {
+
+
+        val productDetailsFragment = ProductDetailsFragment.newInstance(productId)
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, productDetailsFragment)
+            .addToBackStack(null)
+            .commit()
+
+
     }
 
     private fun setUpSearchView() {
