@@ -14,7 +14,11 @@ import com.example.e_commercesupercart.databinding.FragmentSearchBinding
 import com.example.e_commercesupercart.model.ApiClient
 import com.example.e_commercesupercart.model.ApiService
 import com.example.e_commercesupercart.model.repository.SearchRepository
+import com.example.e_commercesupercart.model.roomdb.CartDatabase
+import com.example.e_commercesupercart.model.roomdb.CartRepository
 import com.example.e_commercesupercart.view.adaptors.ProductAdapter
+import com.example.e_commercesupercart.viewmodel.CartViewModel
+import com.example.e_commercesupercart.viewmodel.CartViewModelFactory
 import com.example.e_commercesupercart.viewmodel.SearchViewModel
 import com.example.e_commercesupercart.viewmodel.SearchViewModelFactory
 
@@ -23,6 +27,7 @@ class SearchFragment : Fragment() {
     private lateinit var binding: FragmentSearchBinding
     private lateinit var searchViewModel: SearchViewModel
     private lateinit var productAdapter: ProductAdapter
+    private lateinit var cartViewModel: CartViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,6 +35,8 @@ class SearchFragment : Fragment() {
     ): View {
         binding = FragmentSearchBinding.inflate(inflater, container, false)
 
+        val cartRepository = CartRepository(CartDatabase.getDatabase(requireContext()).cartDao())
+        cartViewModel = ViewModelProvider(this, CartViewModelFactory(cartRepository))[CartViewModel::class.java]
         val apiService = ApiClient.retrofit.create(ApiService::class.java)
         val searchRepository = SearchRepository(apiService)
         searchViewModel = ViewModelProvider(
@@ -45,9 +52,9 @@ class SearchFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        productAdapter = ProductAdapter(emptyList()){ productId ->
+        productAdapter = ProductAdapter(emptyList(),{ productId ->
             openProductDetails(productId)
-        }
+        },cartViewModel)
         binding.recyclerViewSearchResults.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = productAdapter

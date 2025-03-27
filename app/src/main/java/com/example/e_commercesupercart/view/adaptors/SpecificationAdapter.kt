@@ -6,13 +6,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.e_commercesupercart.databinding.ItemSpecificationBinding
 import com.example.e_commercesupercart.model.product_details.Specification
 
-class SpecificationAdapter : RecyclerView.Adapter<SpecificationAdapter.SpecViewHolder>() {
+class SpecificationAdapter( private val specifications: List<Specification>
+): RecyclerView.Adapter<SpecificationAdapter.SpecViewHolder>() {
 
-    private val specifications = mutableListOf<Specification>()
 
     fun submitList(newSpecs: List<Specification>) {
-        specifications.clear()
-        specifications.addAll(newSpecs)
+        //specifications.clear()
+      //  specifications.addAll(newSpecs)
         notifyDataSetChanged()
     }
 

@@ -6,14 +6,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.e_commercesupercart.databinding.ProductItemBinding
 import com.example.e_commercesupercart.model.subcategories.Product
+import com.example.e_commercesupercart.viewmodel.CartViewModel
 
 class ProductAdapter(private var products: List<Product>,
-                     private val onProductClick:(String) -> Unit)
+                     private val onProductClick:(String) -> Unit, private val cartViewModel: CartViewModel
+)
     : RecyclerView.Adapter<ProductViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
         val binding = ProductItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ProductViewHolder(binding, onProductClick)
+        return ProductViewHolder(binding, onProductClick, cartViewModel)
     }
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {

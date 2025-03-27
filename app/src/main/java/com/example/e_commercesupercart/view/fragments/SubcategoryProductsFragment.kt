@@ -13,16 +13,20 @@ import com.example.e_commercesupercart.databinding.FragmentSubcategoryProductsBi
 import com.example.e_commercesupercart.model.ApiClient
 import com.example.e_commercesupercart.model.ApiService
 import com.example.e_commercesupercart.model.repository.ProductRepository
+import com.example.e_commercesupercart.model.roomdb.CartDatabase
+import com.example.e_commercesupercart.model.roomdb.CartRepository
 import com.example.e_commercesupercart.view.adaptors.ProductAdapter
+import com.example.e_commercesupercart.viewmodel.CartViewModel
+import com.example.e_commercesupercart.viewmodel.CartViewModelFactory
 import com.example.e_commercesupercart.viewmodel.ProductViewModel
 import com.example.e_commercesupercart.viewmodel.ProductViewModelFactory
 
 
 class SubcategoryProductsFragment : Fragment() {
-
     private lateinit var binding: FragmentSubcategoryProductsBinding
     private lateinit var productViewModel: ProductViewModel
     private lateinit var subcategoryId: String
+    private lateinit var cartViewModel: CartViewModel
     private lateinit var productAdapter: ProductAdapter
 
     override fun onCreateView(
@@ -32,18 +36,22 @@ class SubcategoryProductsFragment : Fragment() {
         binding = FragmentSubcategoryProductsBinding.inflate(inflater, container, false)
 
         subcategoryId = arguments?.getString("subcategoryId") ?: ""
-        productAdapter = ProductAdapter(listOf()){ productId ->
+        val cartRepository = CartRepository(CartDatabase.getDatabase(requireContext()).cartDao())
+        cartViewModel = ViewModelProvider(this, CartViewModelFactory(cartRepository))[CartViewModel::class.java]
+
+        productAdapter = ProductAdapter(listOf(),{ productId ->
             openProductDetails(productId)
-        }
+        }, cartViewModel)
         binding.recyclerViewProducts.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerViewProducts.adapter = productAdapter
 
         val apiService = ApiClient.retrofit.create(ApiService::class.java)
         val productRepository = ProductRepository(apiService)
         productViewModel = ViewModelProvider(this, ProductViewModelFactory(productRepository)
-            ).get(ProductViewModel::class.java)
-
+        )[ProductViewModel::class.java]
         observeProducts()
+
+
 
         return binding.root
     }
@@ -60,7 +68,6 @@ class SubcategoryProductsFragment : Fragment() {
         productViewModel.errorLiveData.observe(viewLifecycleOwner) { errorMessage ->
             Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
         }
-
         productViewModel.getProducts(subcategoryId)
     }
     private fun openProductDetails(productId: String) {
@@ -74,4 +81,5 @@ class SubcategoryProductsFragment : Fragment() {
             .addToBackStack(null)
             .commit()
     }
+
 }
