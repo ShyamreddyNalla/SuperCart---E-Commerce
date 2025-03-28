@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.ECommerceSuperCart" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Base.Theme.ECommerceSuperCart" parent="Theme.AppCompat.DayNight.NoActionBar">
 <item name="android:statusBarColor">#2196F3</item>
 <item name="android:navigationBarColor">#03A9F4</item>
 

@@ -26,4 +26,8 @@ interface CartDao {
 
     @Query("DELETE FROM cart_items")
     fun clearCart()
+
+    @Query("SELECT quantity FROM cart_items WHERE productId = :productId")
+    fun getProductCount(productId: Int): LiveData<Int>
+
 }

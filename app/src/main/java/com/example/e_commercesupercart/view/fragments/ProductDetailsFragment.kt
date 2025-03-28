@@ -25,7 +25,6 @@ import com.example.e_commercesupercart.viewmodel.CartViewModelFactory
 import com.example.e_commercesupercart.viewmodel.ProductDetailsViewModel
 import com.example.e_commercesupercart.viewmodel.ProductDetailsViewModelFactory
 
-
 class ProductDetailsFragment : Fragment() {
 
     private lateinit var binding: FragmentProductDetailsBinding
@@ -36,7 +35,6 @@ class ProductDetailsFragment : Fragment() {
     private lateinit var reviewAdapter: ReviewAdapter
     private lateinit var cartRepository: CartRepository
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,37 +44,48 @@ class ProductDetailsFragment : Fragment() {
         val productId = arguments?.getString("product_id") ?: return binding.root
 
         val repository = ProductDetailRepository(ApiClient.retrofit.create(ApiService::class.java))
-        productDetailsViewModel = ViewModelProvider(this, ProductDetailsViewModelFactory(repository))[ProductDetailsViewModel::class.java]
+        productDetailsViewModel = ViewModelProvider(
+            this,
+            ProductDetailsViewModelFactory(repository)
+        )[ProductDetailsViewModel::class.java]
 
         val cartDao = CartDatabase.getDatabase(requireContext()).cartDao()
         cartRepository = CartRepository(cartDao)
-        cartViewModel = ViewModelProvider(this,CartViewModelFactory(cartRepository))[CartViewModel::class.java]
+        cartViewModel =
+            ViewModelProvider(this, CartViewModelFactory(cartRepository))[CartViewModel::class.java]
+
         productDetailsViewModel.fetchProductDetails(productId)
+
         imageAdapter = ProductImageAdapter()
         reviewAdapter = ReviewAdapter()
 
         binding.viewPagerImages.adapter = imageAdapter
-
-
         binding.recyclerReviews.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerReviews.adapter = reviewAdapter
 
         productDetailsViewModel.productDetails.observe(viewLifecycleOwner) { product ->
-            if (product != null) {
-                specAdapter = SpecificationAdapter(product.specifications)
+            product?.let {
+                specAdapter = SpecificationAdapter(it.specifications)
+                binding.recyclerSpecifications.layoutManager = LinearLayoutManager(requireContext())
+                binding.recyclerSpecifications.adapter = specAdapter
+                updateUI(it)
+
+                cartViewModel.getProductCount(it.productId.toInt()).observe(viewLifecycleOwner) { count ->
+                    if (count > 0) {
+                        binding.buttonAddToCart.visibility = View.GONE
+                        binding.quantityLayout.visibility = View.VISIBLE
+                        binding.textQuantity.text = count.toString()
+                    } else {
+                        binding.buttonAddToCart.visibility = View.VISIBLE
+                        binding.quantityLayout.visibility = View.GONE
+                    }
+                }
             }
-            binding.recyclerSpecifications.layoutManager = LinearLayoutManager(requireContext())
-            binding.recyclerSpecifications.adapter = specAdapter
-            product?.let { updateUI(it) }
-
-
         }
 
         productDetailsViewModel.errorMessage.observe(viewLifecycleOwner) { error ->
             error?.let { Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show() }
         }
-
-        productDetailsViewModel.fetchProductDetails(productId)
 
         binding.buttonAddToCart.setOnClickListener {
             val product = productDetailsViewModel.productDetails.value
@@ -85,11 +94,14 @@ class ProductDetailsFragment : Fragment() {
                     productId = it.productId.toInt(),
                     productName = it.productName,
                     productPrice = it.price,
+                    productDescription = it.description,
                     productImage = (it.productImageUrl.firstOrNull() ?: "").toString(),
                     quantity = 1
                 )
+
                 cartViewModel.addItem(cartItem)
                 Toast.makeText(requireContext(), "Added to cart", Toast.LENGTH_SHORT).show()
+
                 binding.buttonAddToCart.visibility = View.GONE
                 binding.quantityLayout.visibility = View.VISIBLE
                 binding.textQuantity.text = "1"
@@ -97,40 +109,30 @@ class ProductDetailsFragment : Fragment() {
         }
 
         binding.buttonPlus.setOnClickListener {
-            val product = productDetailsViewModel.productDetails.value
-            product?.let {
-                val updatedQuantity = binding.textQuantity.text.toString().toInt() + 1
-                binding.textQuantity.text = updatedQuantity.toString()
-
-                val updatedItem = CartItem(
-                    productId = it.productId.toInt(),
-                    productName = it.productName,
-                    productPrice = it.price,
-                    productImage = (it.productImageUrl.firstOrNull() ?: "").toString(),
-                    quantity = updatedQuantity
-                )
-                cartViewModel.addItem(updatedItem)
-            }
+            val currentQuantity = binding.textQuantity.text.toString().toInt()
+            val newQuantity = currentQuantity + 1
+            updateCartQuantity(newQuantity)
         }
 
         binding.buttonMinus.setOnClickListener {
-            val product = productDetailsViewModel.productDetails.value
-            product?.let {
-                val updatedQuantity = (binding.textQuantity.text.toString().toInt() - 1).coerceAtLeast(0)
-                binding.textQuantity.text = updatedQuantity.toString()
+            val currentQuantity = binding.textQuantity.text.toString().toInt()
+            val newQuantity = (currentQuantity - 1).coerceAtLeast(0)
 
-                val updatedItem = CartItem(
-                    productId = it.productId.toInt(),
-                    productName = it.productName,
-                    productPrice = it.price,
-                    productImage = (it.productImageUrl.firstOrNull() ?: "").toString(),
-                    quantity = updatedQuantity
-                )
+            if (newQuantity > 0) {
+                updateCartQuantity(newQuantity)
+            } else {
+                val product = productDetailsViewModel.productDetails.value
+                product?.let {
+                    val cartItem = CartItem(
+                        productId = it.productId.toInt(),
+                        productName = it.productName,
+                        productPrice = it.price,
+                        productDescription = it.description,
+                        productImage = (it.productImageUrl.firstOrNull() ?: "").toString(),
+                        quantity = 0
+                    )
+                    cartViewModel.removeItem(cartItem)
 
-                if (updatedQuantity > 0) {
-                    cartViewModel.addItem(updatedItem)
-                } else {
-                    cartViewModel.removeItem(updatedItem)
                     binding.buttonAddToCart.visibility = View.VISIBLE
                     binding.quantityLayout.visibility = View.GONE
                 }
@@ -138,6 +140,36 @@ class ProductDetailsFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    private fun updateCartQuantity(newQuantity: Int) {
+        val product = productDetailsViewModel.productDetails.value
+        product?.let {
+            if (newQuantity > 0) {
+                val updatedItem = CartItem(
+                    productId = it.productId.toInt(),
+                    productName = it.productName,
+                    productPrice = it.price,
+                    productDescription = it.description,
+                    productImage = (it.productImageUrl.firstOrNull() ?: "").toString(),
+                    quantity = newQuantity
+                )
+                cartViewModel.addItem(updatedItem)
+                binding.textQuantity.text = newQuantity.toString()
+            } else {
+                val cartItem = CartItem(
+                    productId = it.productId.toInt(),
+                    productName = it.productName,
+                    productPrice = it.price,
+                    productDescription = it.description,
+                    productImage = (it.productImageUrl.firstOrNull() ?: "").toString(),
+                    quantity = 0
+                )
+                cartViewModel.removeItem(cartItem)
+                binding.buttonAddToCart.visibility = View.VISIBLE
+                binding.quantityLayout.visibility = View.GONE
+            }
+        }
     }
 
     private fun updateUI(product: Product) {
@@ -148,6 +180,7 @@ class ProductDetailsFragment : Fragment() {
         imageAdapter.submitList(product.images)
         reviewAdapter.submitList(product.reviews)
     }
+
     companion object {
         fun newInstance(productId: String): ProductDetailsFragment {
             val fragment = ProductDetailsFragment()

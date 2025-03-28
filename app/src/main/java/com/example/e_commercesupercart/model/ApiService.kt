@@ -35,5 +35,10 @@ interface ApiService {
     @GET("Product/details/{product_id}")
     suspend fun getProductDetails(@Path("product_id") productId: String): Response<ProductDetailsResponse>
 
+    @POST("User/address")
+    suspend fun addAddress(@Body addAddressRequest: AddAddressRequest): Response<AddAddressResponse>
+
+    @GET("User/address/{user_id}")
+    suspend fun getAddresses(@Path("user_id") userId: Int): Response<AddressResponse>
 
    }

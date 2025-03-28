@@ -10,7 +10,6 @@ import com.example.e_commercesupercart.model.roomdb.CartItem
 import com.example.e_commercesupercart.model.subcategories.Product
 import com.example.e_commercesupercart.viewmodel.CartViewModel
 
-
 class ProductViewHolder(private val binding: ProductItemBinding,
                         private val onProductClick: (String) -> Unit,
                         private val cartViewModel: CartViewModel) :
@@ -37,50 +36,54 @@ class ProductViewHolder(private val binding: ProductItemBinding,
                 productId = product.productId.toInt(),
                 productName = product.productName,
                 productPrice = product.price,
+                productDescription = product.description,
                 productImage = (product.productImageUrl.firstOrNull() ?: "").toString(),
                 quantity = 1
             )
-            cartViewModel.addItem(cartItem)  // Add product to cart
+            cartViewModel.addItem(cartItem)
             binding.buttonAddToCart.visibility = View.GONE
             binding.quantityLayout.visibility = View.VISIBLE
             binding.textQuantity.text = "1"
         }
 
         binding.buttonIncrease.setOnClickListener {
-            val newQuantity = binding.textQuantity.text.toString().toInt() + 1
-            binding.textQuantity.text = newQuantity.toString()
-
-            val updatedItem = CartItem(
-                productId = product.productId.toInt(),
-                productName = product.productName,
-                productPrice = product.price,
-                productImage = (product.productImageUrl.firstOrNull() ?: "").toString(),
-                quantity = newQuantity
-            )
-            cartViewModel.addItem(updatedItem)
+            val currentQuantity = binding.textQuantity.text.toString().toInt()
+            val newQuantity = currentQuantity + 1
+            updateCartQuantity(product, newQuantity)
         }
 
         binding.buttonDecrease.setOnClickListener {
             val currentQuantity = binding.textQuantity.text.toString().toInt()
             val newQuantity = (currentQuantity - 1).coerceAtLeast(0)
-
-            binding.textQuantity.text = newQuantity.toString()
-
-            val updatedItem = CartItem(
-                productId = product.productId.toInt(),
-                productName = product.productName,
-                productPrice = product.price,
-                productImage = (product.productImageUrl.firstOrNull() ?: "").toString(),
-                quantity = newQuantity
-            )
-
             if (newQuantity > 0) {
-                cartViewModel.addItem(updatedItem)
+                updateCartQuantity(product, newQuantity)
             } else {
-                cartViewModel.removeItem(updatedItem)
+                val cartItem = CartItem(
+                    productId = product.productId.toInt(),
+                    productName = product.productName,
+                    productPrice = product.price,
+                    productDescription = product.description,
+                    productImage = (product.productImageUrl.firstOrNull() ?: "").toString(),
+                    quantity = 0
+                )
+                cartViewModel.removeItem(cartItem)
                 binding.buttonAddToCart.visibility = View.VISIBLE
                 binding.quantityLayout.visibility = View.GONE
             }
         }
+    }
+
+    private fun updateCartQuantity(product: Product, newQuantity: Int) {
+        val updatedItem = CartItem(
+            productId = product.productId.toInt(),
+            productName = product.productName,
+            productPrice = product.price,
+            productDescription = product.description,
+            productImage = (product.productImageUrl.firstOrNull() ?: "").toString(),
+            quantity = newQuantity
+        )
+
+        cartViewModel.addItem(updatedItem)
+        binding.textQuantity.text = newQuantity.toString()
     }
 }

@@ -26,6 +26,7 @@ class CartAdapter(
         holder.binding.apply {
             productName.text = item.productName
             productPrice.text = "$${item.productPrice}"
+            productDescription.text = item.productDescription
             textQuantity.text = item.quantity.toString()
             Glide.with(imageProduct.context).load(item.productImage).into(imageProduct)
 

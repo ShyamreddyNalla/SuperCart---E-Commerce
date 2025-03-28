@@ -20,6 +20,9 @@ class CartViewModel(private val repository: CartRepository) : ViewModel() {
     fun removeItem(item: CartItem) {
         repository.removeItem(item)
     }
+    fun getProductCount(productId: Int): LiveData<Int> {
+        return repository.getProductCount(productId)
+    }
 
 
 }

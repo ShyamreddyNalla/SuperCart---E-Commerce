@@ -24,7 +24,7 @@ import com.example.e_commercesupercart.viewmodel.factories.CategoryViewModelFact
 
 class CategoriesFragment : Fragment() {
 
-    private lateinit var binding: FragmentCategoryBinding
+    lateinit var binding: FragmentCategoryBinding
     private lateinit var categoryViewModel: CategoryViewModel
     private lateinit var navHeadBinding: NavHeadBinding
 
@@ -87,6 +87,14 @@ class CategoriesFragment : Fragment() {
                 R.id.nav_home ->{
                     parentFragmentManager.beginTransaction()
                         .replace(R.id.fragment_container,CategoriesFragment())
+                        .addToBackStack(null)
+                        .commit()
+                    binding.drawerLayout.closeDrawer(GravityCompat.START)
+                    true
+                }
+                R.id.nav_cart ->{
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container,CartFragment())
                         .addToBackStack(null)
                         .commit()
                     binding.drawerLayout.closeDrawer(GravityCompat.START)

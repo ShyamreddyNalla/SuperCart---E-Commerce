@@ -9,9 +9,11 @@ import com.example.e_commercesupercart.model.subcategories.Product
 import com.example.e_commercesupercart.viewmodel.CartViewModel
 
 class ProductAdapter(private var products: List<Product>,
-                     private val onProductClick:(String) -> Unit, private val cartViewModel: CartViewModel
+                     private val onProductClick:(String) -> Unit,
+                     private val cartViewModel: CartViewModel
 )
     : RecyclerView.Adapter<ProductViewHolder>() {
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
         val binding = ProductItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
