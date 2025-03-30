@@ -92,9 +92,18 @@ class CategoriesFragment : Fragment() {
                     binding.drawerLayout.closeDrawer(GravityCompat.START)
                     true
                 }
+
                 R.id.nav_cart ->{
                     parentFragmentManager.beginTransaction()
                         .replace(R.id.fragment_container,CartFragment())
+                        .addToBackStack(null)
+                        .commit()
+                    binding.drawerLayout.closeDrawer(GravityCompat.START)
+                    true
+                }
+               R.id.nav_orders ->{
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container,OrderDetailsFragment())
                         .addToBackStack(null)
                         .commit()
                     binding.drawerLayout.closeDrawer(GravityCompat.START)

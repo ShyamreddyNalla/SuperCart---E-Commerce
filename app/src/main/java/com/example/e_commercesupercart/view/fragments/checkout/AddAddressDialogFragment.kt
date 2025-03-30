@@ -28,7 +28,7 @@ class AddAddressDialogFragment(private val onAddressAdded: (String, String) -> U
             val address = binding.etAddress.text.toString()
 
             if (title.isNotEmpty() && address.isNotEmpty()) {
-                onAddressAdded(title, address)  // Pass the new address to the parent fragment
+                onAddressAdded(title, address)
                 dismiss()
             } else {
                 Toast.makeText(context, "Please fill in both fields", Toast.LENGTH_SHORT).show()

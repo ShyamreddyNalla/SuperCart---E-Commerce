@@ -17,7 +17,6 @@ import com.example.e_commercesupercart.model.roomdb.CartDatabase
 import com.example.e_commercesupercart.model.roomdb.CartItem
 import com.example.e_commercesupercart.model.roomdb.CartRepository
 import com.example.e_commercesupercart.view.CheckoutActivity
-import com.example.e_commercesupercart.view.MainActivity
 import com.example.e_commercesupercart.viewmodel.CartViewModel
 import com.example.e_commercesupercart.viewmodel.CartViewModelFactory
 class CartFragment : Fragment() {

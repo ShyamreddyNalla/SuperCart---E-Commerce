@@ -1,12 +1,18 @@
 package com.example.e_commercesupercart.model
 
 
+
+import com.example.e_commercesupercart.model.orders.OrderRequest
+import com.example.e_commercesupercart.model.orders.OrderResponse
+import com.example.e_commercesupercart.model.orders.orderdetailresponse.OrderDetailsResponse
 import com.example.e_commercesupercart.model.product_details.ProductDetailsResponse
 import com.example.e_commercesupercart.model.subcategories.ProductResponse
 import com.example.e_commercesupercart.model.subcategories.SubCategoryResponse
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -38,7 +44,13 @@ interface ApiService {
     @POST("User/address")
     suspend fun addAddress(@Body addAddressRequest: AddAddressRequest): Response<AddAddressResponse>
 
-    @GET("User/address/{user_id}")
+    @GET("User/addresses/{user_id}")
     suspend fun getAddresses(@Path("user_id") userId: Int): Response<AddressResponse>
 
-   }
+    @Headers("Content-Type: application/json")
+    @POST("Order")
+    suspend fun placeOrder(@Body orderRequest: OrderRequest): Response<OrderResponse>
+    @GET("Order")
+    suspend fun getOrderDetails(@Query("order_id") orderId: String): Response<OrderDetailsResponse>
+
+}

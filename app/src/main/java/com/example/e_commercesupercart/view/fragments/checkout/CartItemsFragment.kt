@@ -32,9 +32,10 @@ class CartItemsFragment : Fragment() {
 
         setupRecyclerView()
         observeCartItems()
-
         binding.btnNext.setOnClickListener {
-            (activity as? CheckoutActivity)?.moveToNextTab()
+            if (isAdded) {
+                (activity as? CheckoutActivity)?.moveToNextTab()
+            }
         }
 
         return binding.root

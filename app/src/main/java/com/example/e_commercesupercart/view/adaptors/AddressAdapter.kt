@@ -6,7 +6,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.e_commercesupercart.databinding.ItemAddressBinding
 import com.example.e_commercesupercart.model.Address
 
-class AddressAdapter : RecyclerView.Adapter<AddressAdapter.AddressViewHolder>() {
+class AddressAdapter(
+    private val onAddressSelected: (Address) -> Unit
+) : RecyclerView.Adapter<AddressAdapter.AddressViewHolder>() {
 
     private var addressList = listOf<Address>()
 
@@ -31,6 +33,10 @@ class AddressAdapter : RecyclerView.Adapter<AddressAdapter.AddressViewHolder>() 
         fun bind(address: Address) {
             binding.tvTitle.text = address.title
             binding.tvAddress.text = address.address
+
+            binding.root.setOnClickListener {
+                onAddressSelected(address)
+            }
         }
     }
 }

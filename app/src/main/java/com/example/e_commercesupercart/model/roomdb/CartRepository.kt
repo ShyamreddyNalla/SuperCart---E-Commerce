@@ -33,7 +33,4 @@ class CartRepository(private val cartDao: CartDao) {
     }
 
 
-    fun clearCart() {
-        cartDao.clearCart()
-    }
 }
