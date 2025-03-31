@@ -116,11 +116,10 @@ class ProductDetailsFragment : Fragment() {
 
         binding.buttonMinus.setOnClickListener {
             val currentQuantity = binding.textQuantity.text.toString().toInt()
-            val newQuantity = (currentQuantity - 1).coerceAtLeast(0)
-
-            if (newQuantity > 0) {
+            if (currentQuantity > 1) {
+                val newQuantity = currentQuantity - 1
                 updateCartQuantity(newQuantity)
-            } else {
+            } else if (currentQuantity == 1) {
                 val product = productDetailsViewModel.productDetails.value
                 product?.let {
                     val cartItem = CartItem(
@@ -132,7 +131,6 @@ class ProductDetailsFragment : Fragment() {
                         quantity = 0
                     )
                     cartViewModel.removeItem(cartItem)
-
                     binding.buttonAddToCart.visibility = View.VISIBLE
                     binding.quantityLayout.visibility = View.GONE
                 }
@@ -145,30 +143,17 @@ class ProductDetailsFragment : Fragment() {
     private fun updateCartQuantity(newQuantity: Int) {
         val product = productDetailsViewModel.productDetails.value
         product?.let {
-            if (newQuantity > 0) {
-                val updatedItem = CartItem(
-                    productId = it.productId.toInt(),
-                    productName = it.productName,
-                    productPrice = it.price,
-                    productDescription = it.description,
-                    productImage = (it.productImageUrl.firstOrNull() ?: "").toString(),
-                    quantity = newQuantity
-                )
-                cartViewModel.addItem(updatedItem)
-                binding.textQuantity.text = newQuantity.toString()
-            } else {
-                val cartItem = CartItem(
-                    productId = it.productId.toInt(),
-                    productName = it.productName,
-                    productPrice = it.price,
-                    productDescription = it.description,
-                    productImage = (it.productImageUrl.firstOrNull() ?: "").toString(),
-                    quantity = 0
-                )
-                cartViewModel.removeItem(cartItem)
-                binding.buttonAddToCart.visibility = View.VISIBLE
-                binding.quantityLayout.visibility = View.GONE
-            }
+            val updatedItem = CartItem(
+                productId = it.productId.toInt(),
+                productName = it.productName,
+                productPrice = it.price,
+                productDescription = it.description,
+                productImage = (it.productImageUrl.firstOrNull() ?: "").toString(),
+                quantity = newQuantity
+            )
+
+            cartViewModel.addItem(updatedItem)
+            binding.textQuantity.text = newQuantity.toString()
         }
     }
 

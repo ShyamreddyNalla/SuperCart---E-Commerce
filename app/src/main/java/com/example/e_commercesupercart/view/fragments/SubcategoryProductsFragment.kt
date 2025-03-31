@@ -78,7 +78,7 @@ class SubcategoryProductsFragment : Fragment() {
         }
            requireActivity().supportFragmentManager.beginTransaction()
             .add(R.id.fragment_container, fragment)
-            .addToBackStack(null)
+            .addToBackStack("product_details")
             .commit()
     }
 

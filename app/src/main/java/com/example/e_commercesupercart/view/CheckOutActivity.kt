@@ -1,16 +1,18 @@
 package com.example.e_commercesupercart.view
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.GravityCompat
 import com.example.e_commercesupercart.R
+import com.example.e_commercesupercart.activity.OrderListActivity
 import com.example.e_commercesupercart.databinding.ActivityCheckOutBinding
 import com.example.e_commercesupercart.view.adaptors.CheckoutAdapter
 import com.example.e_commercesupercart.view.fragments.CartFragment
 import com.example.e_commercesupercart.view.fragments.CategoriesFragment
 import com.example.e_commercesupercart.view.fragments.LoginFragment
-import com.example.e_commercesupercart.view.fragments.OrderDetailsFragment
 import com.google.android.material.tabs.TabLayoutMediator
 import com.example.e_commercesupercart.viewmodel.CheckoutViewModel
 
@@ -76,12 +78,11 @@ class CheckoutActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_orders -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container, OrderDetailsFragment())
-                        .addToBackStack(null)
-                        .commit()
+                 val intent = Intent(this, OrderDetailsActivity::class.java)
+                    startActivity(intent)
                     binding.drawerLayout.closeDrawer(GravityCompat.START)
                     true
+
                 }
                 R.id.nav_logout -> {
                     supportFragmentManager.beginTransaction()

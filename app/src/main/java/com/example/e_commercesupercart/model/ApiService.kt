@@ -2,6 +2,7 @@ package com.example.e_commercesupercart.model
 
 
 
+import com.example.e_commercesupercart.model.orders.OrderListResponse
 import com.example.e_commercesupercart.model.orders.OrderRequest
 import com.example.e_commercesupercart.model.orders.OrderResponse
 import com.example.e_commercesupercart.model.orders.orderdetailresponse.OrderDetailsResponse
@@ -52,5 +53,6 @@ interface ApiService {
     suspend fun placeOrder(@Body orderRequest: OrderRequest): Response<OrderResponse>
     @GET("Order")
     suspend fun getOrderDetails(@Query("order_id") orderId: String): Response<OrderDetailsResponse>
-
+    @GET("Order/userOrders/{user_id}")
+    suspend fun getUserOrders(@Path("user_id") userId: String): Response<OrderListResponse>
 }

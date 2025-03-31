@@ -34,14 +34,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun logout() {
-        val sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putBoolean("isLoggedIn", false)
-        editor.apply()
-
-        navigateToLogin()
-    }
 
     private fun navigateToLogin() {
         supportFragmentManager.beginTransaction()

@@ -31,7 +31,6 @@ class DeliveryFragment : Fragment() {
     ): View? {
         binding = FragmentDeliveryBinding.inflate(inflater, container, false)
 
-        // Set up button listener for moving to the next tab (but only after an address is selected)
         binding.btnNext.setOnClickListener {
             val selectedAddress = checkoutViewModel.selectedDeliveryAddress.value
             if (selectedAddress.isNullOrEmpty()) {
@@ -51,9 +50,9 @@ class DeliveryFragment : Fragment() {
         val viewModelFactory = AddressViewModelFactory(addressRepository)
         addressViewModel = ViewModelProvider(this, viewModelFactory)[AddressViewModel::class.java]
 
-        // Set up the AddressAdapter
         addressAdapter = AddressAdapter { selectedAddress ->
-            checkoutViewModel.selectedDeliveryAddress.value = selectedAddress.title
+            checkoutViewModel.selectedDeliveryAddressTitle.value = selectedAddress.title
+            checkoutViewModel.selectedDeliveryAddress.value = selectedAddress.address
             Log.d("DeliveryFragment", "Selected Address: ${selectedAddress.title}")
             Toast.makeText(context, "Address selected: ${selectedAddress.title}", Toast.LENGTH_SHORT).show()
             (activity as? CheckoutActivity)?.moveToNextTab()
@@ -62,23 +61,19 @@ class DeliveryFragment : Fragment() {
         binding.rvSavedAddresses.layoutManager = LinearLayoutManager(context)
         binding.rvSavedAddresses.adapter = addressAdapter
 
-        // Observe addresses list
         addressViewModel.addresses.observe(viewLifecycleOwner, { addresses ->
             if (addresses != null) {
                 addressAdapter.submitList(addresses)
             }
         })
 
-        // Observe address add status
         addressViewModel.addAddressStatus.observe(viewLifecycleOwner, { status ->
             Toast.makeText(context, status, Toast.LENGTH_SHORT).show()
         })
 
-        // Fetch addresses for the user
-        val userId = 444
+        val userId = 1
         addressViewModel.getAddresses(userId)
 
-        // Open the address add dialog
         binding.btnAddAddress.setOnClickListener {
             showAddAddressDialog()
         }
@@ -86,7 +81,7 @@ class DeliveryFragment : Fragment() {
 
     private fun showAddAddressDialog() {
         val dialog = AddAddressDialogFragment { title, address ->
-            val userId = 444
+            val userId = 1
             addressViewModel.addAddress(userId, title, address)
         }
         dialog.show(childFragmentManager, "AddAddressDialog")

@@ -1,18 +1,19 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.ECommerceSuperCart" parent="Theme.AppCompat.DayNight.NoActionBar">
-<item name="android:statusBarColor">#2196F3</item>
-<item name="android:navigationBarColor">#03A9F4</item>
+        <item name="android:statusBarColor">#2196F3</item>
+        <item name="android:navigationBarColor">#03A9F4</item>
 
 
-         <item name="colorPrimary">#73A7D1</item>
+        <item name="colorPrimary">#73A7D1</item>
     </style>
 
     <style name="Theme.ECommerceSuperCart" parent="Base.Theme.ECommerceSuperCart" />
- <style name="Theme.AppCompat.Starting" parent="Theme.SplashScreen">
-     <item name="windowSplashScreenBackground">@color/bg_splash_screen</item>
-     <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_foreground</item>
-     <item name="postSplashScreenTheme">@style/Theme.ECommerceSuperCart</item>
- </style>
-  
+
+    <style name="Theme.AppCompat.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/bg_splash_screen</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_foreground</item>
+        <item name="postSplashScreenTheme">@style/Theme.ECommerceSuperCart</item>
+    </style>
+
 </resources>

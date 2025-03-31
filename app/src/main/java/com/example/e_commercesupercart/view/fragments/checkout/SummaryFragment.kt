@@ -1,17 +1,17 @@
 package com.example.e_commercesupercart.view.fragments.checkout
 
 import CartAdapter
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.replace
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.e_commercesupercart.R
 import com.example.e_commercesupercart.databinding.FragmentSummaryBinding
 import com.example.e_commercesupercart.model.ApiClient
 import com.example.e_commercesupercart.model.orders.OrderItem
@@ -19,7 +19,7 @@ import com.example.e_commercesupercart.model.orders.OrderRequest
 import com.example.e_commercesupercart.model.repository.OrderRepository
 import com.example.e_commercesupercart.model.roomdb.CartDatabase
 import com.example.e_commercesupercart.model.roomdb.CartRepository
-import com.example.e_commercesupercart.view.fragments.OrderDetailsFragment
+import com.example.e_commercesupercart.view.OrderDetailsActivity
 import com.example.e_commercesupercart.viewmodel.CartViewModel
 import com.example.e_commercesupercart.viewmodel.CartViewModelFactory
 import com.example.e_commercesupercart.viewmodel.CheckoutViewModel
@@ -39,7 +39,7 @@ class SummaryFragment : Fragment() {
 
 
     private var totalBillAmount: Int = 0
-    private var userId: Int = 444
+    private var userId: Int = 1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -105,7 +105,7 @@ class SummaryFragment : Fragment() {
         val orderRequest = OrderRequest(
             userId = userId,
             deliveryAddress = mapOf(
-                "title" to (checkoutViewModel.selectedDeliveryAddress.value ?: "Home"),
+                "title" to (checkoutViewModel.selectedDeliveryAddressTitle.value ?: "Home"),
                 "address" to (checkoutViewModel.selectedDeliveryAddress.value ?: "")
             ),
             items = orderItems,
@@ -134,18 +134,14 @@ class SummaryFragment : Fragment() {
         }
     }
     private fun navigateToOrderDetails(orderId: String) {
-        val bundle = Bundle().apply {
-            putString("order_id", orderId)
-        }
+        val sharedPreferences = requireContext().getSharedPreferences("app_prefs", AppCompatActivity.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString("order_id", orderId)
+        editor.apply()
 
-        val orderDetailsFragment = OrderDetailsFragment().apply {
-            arguments = bundle
-        }
-
-        requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container2, orderDetailsFragment)
-            .addToBackStack(null)
-            .commit()
+        val intent = Intent(requireContext(), OrderDetailsActivity::class.java)
+        intent.putExtra("order_id", orderId)
+        startActivity(intent)
     }
 
 

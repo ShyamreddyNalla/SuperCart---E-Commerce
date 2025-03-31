@@ -28,4 +28,6 @@ interface CartDao {
     @Query("SELECT quantity FROM cart_items WHERE productId = :productId")
     fun getProductCount(productId: Int): LiveData<Int>
 
+
+
 }

@@ -1,6 +1,7 @@
 package com.example.e_commercesupercart.view.fragments
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,11 +14,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.e_commercesupercart.R
+import com.example.e_commercesupercart.activity.OrderListActivity
 import com.example.e_commercesupercart.databinding.FragmentCategoryBinding
 import com.example.e_commercesupercart.databinding.NavHeadBinding
 import com.example.e_commercesupercart.model.ApiClient
 import com.example.e_commercesupercart.model.ApiService
 import com.example.e_commercesupercart.model.repository.CategoryRepository
+import com.example.e_commercesupercart.view.OrderDetailsActivity
 import com.example.e_commercesupercart.view.adaptors.CategoryAdapter
 import com.example.e_commercesupercart.viewmodel.CategoryViewModel
 import com.example.e_commercesupercart.viewmodel.factories.CategoryViewModelFactory
@@ -102,12 +105,12 @@ class CategoriesFragment : Fragment() {
                     true
                 }
                R.id.nav_orders ->{
-                    parentFragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container,OrderDetailsFragment())
-                        .addToBackStack(null)
-                        .commit()
-                    binding.drawerLayout.closeDrawer(GravityCompat.START)
-                    true
+
+                   val intent = Intent(requireContext(),OrderDetailsActivity::class.java)
+                   startActivity(intent)
+                   binding.drawerLayout.closeDrawer(GravityCompat.START)
+                   true
+
                 }
                 R.id.nav_logout ->{
                     logoutUser()
@@ -122,9 +125,9 @@ class CategoriesFragment : Fragment() {
         }
 
         val sharedPreferences = requireContext().getSharedPreferences("UserDetails", Context.MODE_PRIVATE)
-        val userName = sharedPreferences.getString("userName", "User Name")
-        val userEmail = sharedPreferences.getString("userEmail", "user@example.com")
-        val userPhone = sharedPreferences.getString("userPhone", "1234567890")
+        val userName = sharedPreferences.getString("userName", "Shyam")
+        val userEmail = sharedPreferences.getString("userEmail", "sunder799@gmail.com")
+        val userPhone = sharedPreferences.getString("userPhone", "7493920475")
         Log.d("NavHeader","UserName: $userName, UserEmail: $userEmail, UserPhone: $userPhone")
         navHeadBinding = NavHeadBinding.bind(binding.navigationView.getHeaderView(0))
 

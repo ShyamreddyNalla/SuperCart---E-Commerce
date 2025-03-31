@@ -25,62 +25,62 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="8dp"
-        android:gravity="start|center_vertical">
+        android:paddingTop="8dp">
 
         <TextView
             android:id="@+id/textProductPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
-            android:textColor="@android:color/holo_red_dark"
-            android:layout_gravity="start"
-            android:paddingEnd="8dp"/>
+            android:textColor="#F44336"
+            android:paddingEnd="8dp" />
 
-        <TextView
-            android:id="@+id/buttonAddToCart"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="ADD TO CART"
-            android:textStyle="bold"
-            android:textColor="#2196F3"
-            android:layout_marginStart="240dp"
-            android:layout_gravity="end"
-            android:padding="8dp"/>
-        <LinearLayout
-            android:id="@+id/quantityLayout"
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:gravity="end"
-           android:layout_marginStart="540dp"
-           >
-
-            <ImageButton
-                android:id="@+id/buttonMinus"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:background="#2196F3"
-                android:src="@android:drawable/ic_media_previous"
-                 />
+            android:layout_gravity="end">
 
             <TextView
-                android:id="@+id/textQuantity"
+                android:id="@+id/buttonAddToCart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1"
-                android:textSize="20sp"
-                android:padding="8dp"
-             />
+                android:text="ADD TO CART"
+                android:textStyle="bold"
+                android:textColor="#2196F3"
+                android:layout_marginEnd="16dp"
+                android:padding="8dp" />
 
-            <ImageButton
-                android:id="@+id/buttonPlus"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:background="#2196F3"
-                android:src="@android:drawable/ic_media_next" />
-        </LinearLayout>
+            <LinearLayout
+                android:id="@+id/quantityLayout"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_gravity="end">
+
+                <ImageButton
+                    android:id="@+id/buttonMinus"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:backgroundTint="#2196F3"
+                    android:src="@android:drawable/ic_media_previous" />
+
+                <TextView
+                    android:id="@+id/textQuantity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1"
+                    android:textSize="20sp"
+                    android:padding="8dp" />
+
+                <ImageButton
+                    android:id="@+id/buttonPlus"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:backgroundTint="#2196F3"
+                    android:src="@android:drawable/ic_media_next" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 
     <TextView
